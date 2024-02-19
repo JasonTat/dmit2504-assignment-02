@@ -22,12 +22,14 @@ class MyFirstPageState extends State<MyFirstPage> {
   int timesClicked = 0;
   String msg1 = '';
   String msg2 = '';
+  String name = '';
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('A2 - User Input'),
+        title: const Text('Assignment 02 - Jason Tat'),
       ),
       body: Column(
         children: <Widget>[
@@ -37,18 +39,83 @@ class MyFirstPageState extends State<MyFirstPage> {
               //TODO: Replace this Text Widget
               // and build the label and switch here
               // as children of the row.
-              Text('testing 1 2 3 '),
+
+            const Text('Enable Button'),
+              Switch(
+                      value: enabled,
+                      onChanged: (bool onChangedValue) {
+                        print('onChangedValue changed to $onChangedValue');
+                      enabled = onChangedValue;
+                        setState((){
+                          if(enabled){
+                            // timesClicked = 0;
+                            if(timesClicked > 0){
+                              msg1 = 'Clicked $timesClicked';
+                            }
+                            else{
+                              msg1 = 'Click Me';
+                            }
+
+                            print('enabled = true');
+                          } 
+                          else {
+                            msg1 = 'disabled';
+                            print('enabled = false');
+                          }
+                        });
+                      }),              
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              //TODO: Build the two buttons here 
+              //TODO: Buuild the two buttons here 
               // as children of the row.
               // For each button use a 
               // "Visibility Widget" and its child 
               // will be an "ElevatedButton"
               
+              Visibility(
+                visible: enabled,
+                child: ElevatedButton(
+                  onPressed: () {
+                    setState((){
+                      timesClicked++;
+                      msg1 = 'Clicked $timesClicked';
+                      print('$timesClicked');
+                    });
+                  },
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
+                    elevation: MaterialStateProperty.all(3)
+                  ),
+                  child: Text(msg1),
+                )
+                ),
+                const SizedBox(
+                  width: 20
+                ),
+              Visibility(
+                visible: enabled,
+                child: 
+                ElevatedButton(
+                  
+                  onPressed: () {
+                    setState((){
+                      timesClicked = 0;
+                      msg1 = 'Click Me';
+                      msg2 = 'reset $timesClicked';
+                      print('reset $timesClicked');
+                    });
+                  },
+                  style: ButtonStyle(
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
+                  elevation: MaterialStateProperty.all(3)
+                  
+                ),
+                  child: Text('Reset'),
+                )
+                ),
             ],
           ),
           const SizedBox(
@@ -68,11 +135,50 @@ class MyFirstPageState extends State<MyFirstPage> {
                   // a submit button that will show a
                   // snackbar with the "firstName"
                   // if validation is satisfied.
-                  
+                  TextFormField(
+                      controller: textEditingController,
+                      onChanged: (value) {
+                        name = value;
+                        print(value);
+                      },
+                      maxLength: 20,
+                      decoration: const InputDecoration(
+                        icon: Icon(Icons.hourglass_top),
+                        labelText: 'first name',
+                        helperText: 'min 1, max 20',
+                        suffixIcon: Icon(Icons.check_circle)
+                      )
+                    ),
                 ],
               ),
             ),
           ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: 
+                  ElevatedButton(
+                    onPressed: () {
+                      if(formKey.currentState!.validate()){
+                        formKey.currentState!.save();                    
+                        MySnackBar(text: 'Hey there, your name is $name').show();                  
+                      }
+                    },
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
+                      elevation: MaterialStateProperty.all(3)
+                      
+                    ),
+                    child: const Text('Submit'),                    
+                    )
+                
+              ),
+
+
+            ]
+          )
         ],
       ),
     );

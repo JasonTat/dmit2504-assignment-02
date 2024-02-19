@@ -17,13 +17,21 @@ class MySnackBar {
     behavior: SnackBarBehavior.floating,
     content: Row(
       children: [
-        const Icon(Icons.accessibility_new_rounded),
+        const Icon(Icons.heart_broken),
         const SizedBox(
           width: 10,
         ),
-        Text(text),
+        Text(text)
       ],
     ),
+    action: SnackBarAction(      
+      //had to custom color this label otherwise the label would have the same color as the snackbar, and would not show. but it would still work when clicked.
+      textColor: const Color(0xFFFEDBD0), 
+      label: 'Click Me',
+      onPressed: (){
+      print('Snackbar button clicked');
+    },)
+
   );
 }
 }

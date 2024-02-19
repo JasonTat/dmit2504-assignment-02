@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       scaffoldMessengerKey:
           scaffoldMessengerKey,
-      title: 'A2 - User Input',
+      title: 'Assignment 02 - Jason Tat',
       debugShowCheckedModeBanner: false,
       home: MyFirstPage(),
       theme: buildTheme(),
